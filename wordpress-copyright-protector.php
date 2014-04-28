@@ -161,10 +161,18 @@ if (!class_exists('Wp_Copyright_Protector')) {
                 $wpcp_general_settings = get_option('wpcp_general_settings');
                 
                 $wpcp_text_before_url = (!empty($wpcp_general_settings['wpcp_text_before_url'])?$wpcp_general_settings['wpcp_text_before_url']:'Read more at');
+                
+                $wpcp_disable_admin = (!empty($wpcp_general_settings['wpcp_disable_admin'])?$wpcp_general_settings['wpcp_disable_admin']:'');
+                
+                $enable_script = true;
+                if ( is_super_admin() && $wpcp_disable_admin == "on" ) {
+                    $enable_script = false;
+                }
+                 if ($enable_script) {
                 ?>
                 <script type="text/javascript">
 
-            
+            // <![CDATA[
                 jQuery("body").bind('copy', function (e) {
                         if (typeof window.getSelection == "undefined") return; //IE8 or earlier...
                         
@@ -196,9 +204,11 @@ if (!class_exists('Wp_Copyright_Protector')) {
                                         
                         selection.selectAllChildren(newdiv);
                         window.setTimeout(function () { body_element.removeChild(newdiv); }, 200);
-                });    
+                });
+                 //]]>
                 </script>
                 <?php
+                }
 		}	  
 
 		}
