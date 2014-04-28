@@ -6,7 +6,7 @@
 /*
 Plugin Name: Wordpress Copyright Protector
 Plugin URI: http://www.example.com
-Description: Wordpress Copyright Protector desc placeholder
+Description: Copyright Copy and Paste Protector
 Author: Mike Roberto
 Version: 0.1
 Author URI: http://www.example.com
