@@ -103,7 +103,41 @@ if (!class_exists('Wp_Copyright_Protector')) {
 	
 	
 		public function siteLoadScripts(){
-			wp_enqueue_script( 'jquery' );			  
+		
+	
+			
+			$wpcp_general_settings = get_option('wpcp_general_settings');
+			
+			$wpcp_text_before_url = (!empty($wpcp_general_settings['wpcp_text_before_url'])?$wpcp_general_settings['wpcp_text_before_url']:'');
+			
+			$wpcp_disable_admin = (!empty($wpcp_general_settings['wpcp_disable_admin'])?$wpcp_general_settings['wpcp_disable_admin']:'');
+			
+			$enable_script = true;
+			if ( is_super_admin() && $wpcp_disable_admin == "on" ) {
+				$enable_script = false;
+			}
+			
+			if($enable_script){
+				wp_enqueue_script( 'jquery' );
+				
+				wp_enqueue_script(
+						'wpcp-script',
+						plugins_url('js/wpcp-script.js', __FILE__),
+						array('jquery')
+				);
+				
+				
+				$wpcp_config = array('wpcp_text_before_url'=>$wpcp_text_before_url,'enable_script'=>$enable_script);
+					
+					
+				wp_localize_script( 'wpcp-script', 'wpcp_config',$wpcp_config );
+				
+				
+			}
+			
+			
+			
+			
 		}
 
 
@@ -163,57 +197,7 @@ if (!class_exists('Wp_Copyright_Protector')) {
 		
 		public function footerScript(){
 
-                $wpcp_general_settings = get_option('wpcp_general_settings');
-                
-                $wpcp_text_before_url = (!empty($wpcp_general_settings['wpcp_text_before_url'])?$wpcp_general_settings['wpcp_text_before_url']:'');
-                
-                $wpcp_disable_admin = (!empty($wpcp_general_settings['wpcp_disable_admin'])?$wpcp_general_settings['wpcp_disable_admin']:'');
-                
-                $enable_script = true;
-                if ( is_super_admin() && $wpcp_disable_admin == "on" ) {
-                    $enable_script = false;
-                }
-                 if ($enable_script) {
-                ?>
-                <script type="text/javascript">
-
-            // <![CDATA[
-                jQuery("body").bind('copy', function (e) {
-                        if (typeof window.getSelection == "undefined") return; //IE8 or earlier...
-                        
-                        var body_element = document.getElementsByTagName('body')[0];
-                        var selection = window.getSelection();
-                        
-                        //if the selection is short let's not annoy our users
-                        if (("" + selection).length < 30) return;
-                
-                        //create a div outside of the visible area
-                        //and fill it with the selected text
-                        var newdiv = document.createElement('div');
-                        newdiv.style.position = 'absolute';
-                        newdiv.style.left = '-99999px';
-                        body_element.appendChild(newdiv);
-                        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
-                        
-                        //we need a <pre> tag workaround
-                        //otherwise the text inside "pre" loses all the line breaks!
-                        if (selection.getRangeAt(0).commonAncestorContainer.nodeName == "PRE") {
-                                newdiv.innerHTML = "<pre>" + newdiv.innerHTML
-                                + "</pre><br /><?php echo $wpcp_text_before_url; ?> <a href='" + document.location.href + "'>"
-                                + document.location.href + "</a> &copy; MySite.com";
-                        }
-                        else
-                                newdiv.innerHTML += "<br /><br /><?php echo $wpcp_text_before_url; ?> <a href='"
-                                + document.location.href + "'>"
-                                + document.location.href + "</a> &copy; MySite.com";
-                                        
-                        selection.selectAllChildren(newdiv);
-                        window.setTimeout(function () { body_element.removeChild(newdiv); }, 200);
-                });
-                 //]]>
-                </script>
-                <?php
-                }
+       
 		}	  
 
 		}
