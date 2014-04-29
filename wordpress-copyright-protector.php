@@ -128,10 +128,15 @@ if (!class_exists('Wp_Copyright_Protector')) {
 		* @return void
 		*/
 		public function pluginActivate()
-		{
+		{ 
 			
+			$settings_general = get_option('wpcp_general_settings');
 			
-
+			if(empty($settings_general['wpcp_text_before_url'])){
+				$settings_general['wpcp_text_before_url'] = 'Read more at:';
+			}
+			
+			update_option('wpcp_general_settings', $settings_general);
 		}
 
 		/**
@@ -160,7 +165,7 @@ if (!class_exists('Wp_Copyright_Protector')) {
 
                 $wpcp_general_settings = get_option('wpcp_general_settings');
                 
-                $wpcp_text_before_url = (!empty($wpcp_general_settings['wpcp_text_before_url'])?$wpcp_general_settings['wpcp_text_before_url']:'Read more at');
+                $wpcp_text_before_url = (!empty($wpcp_general_settings['wpcp_text_before_url'])?$wpcp_general_settings['wpcp_text_before_url']:'');
                 
                 $wpcp_disable_admin = (!empty($wpcp_general_settings['wpcp_disable_admin'])?$wpcp_general_settings['wpcp_disable_admin']:'');
                 
@@ -194,11 +199,11 @@ if (!class_exists('Wp_Copyright_Protector')) {
                         //otherwise the text inside "pre" loses all the line breaks!
                         if (selection.getRangeAt(0).commonAncestorContainer.nodeName == "PRE") {
                                 newdiv.innerHTML = "<pre>" + newdiv.innerHTML
-                                + "</pre><br /><?php echo $wpcp_text_before_url; ?>: <a href='" + document.location.href + "'>"
+                                + "</pre><br /><?php echo $wpcp_text_before_url; ?> <a href='" + document.location.href + "'>"
                                 + document.location.href + "</a> &copy; MySite.com";
                         }
                         else
-                                newdiv.innerHTML += "<br /><br /><?php echo $wpcp_text_before_url; ?>: <a href='"
+                                newdiv.innerHTML += "<br /><br /><?php echo $wpcp_text_before_url; ?> <a href='"
                                 + document.location.href + "'>"
                                 + document.location.href + "</a> &copy; MySite.com";
                                         
