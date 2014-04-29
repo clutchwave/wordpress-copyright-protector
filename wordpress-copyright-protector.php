@@ -167,7 +167,7 @@ if (!class_exists('Wp_Copyright_Protector')) {
 			$settings_general = get_option('wpcp_general_settings');
 			
 			if(empty($settings_general['wpcp_text_before_url'])){
-				$settings_general['wpcp_text_before_url'] = 'Read more at:';
+				$settings_general['wpcp_text_before_url'] = 'Read more at: ';
 			}
 			
 			update_option('wpcp_general_settings', $settings_general);

@@ -26,12 +26,12 @@ jQuery(function($){
 	            if (selection.getRangeAt(0).commonAncestorContainer.nodeName == "PRE") {
 	                    newdiv.innerHTML = "<pre>" + newdiv.innerHTML
 	                    + "</pre><br />"+wpcp_config.wpcp_text_before_url+" <a href='" + document.location.href + "'>"
-	                    + document.location.href + "</a> &copy; "+window.location.host;
+	                    + remove_trailing_slash(document.location.href) + "</a>";
 	            }
 	            else
 	                    newdiv.innerHTML += "<br /><br />"+wpcp_config.wpcp_text_before_url+" <a href='"
 	                    + document.location.href + "'>"
-	                    + document.location.href + "</a> &copy; "+window.location.host;
+	                    + remove_trailing_slash(document.location.href) + "</a>";
 	                            
 	            selection.selectAllChildren(newdiv);
 	            window.setTimeout(function () { body_element.removeChild(newdiv); }, 200);
@@ -39,3 +39,8 @@ jQuery(function($){
 	  });
 	
 });
+
+// from http://stackoverflow.com/a/6680877/1636799
+function remove_trailing_slash(incoming_string) {
+  return incoming_string.replace(/\/+$/, "");
+}
